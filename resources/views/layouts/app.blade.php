@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+    <head>
+        {{-- <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
+        @yield('styles')
+
+        <title>{{ config('app.name', 'Laravel') }}</title>
+        <!--Header Links-->
+        @include('layouts.partials.head')
+
+        <!-- Fonts -->
+        {{-- <link rel="preconnect" href="https://fonts.bunny.net">
+        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> --}}
+
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    @include('layouts.partials.header')
+    <body class="hold-transition sidebar-mini layout-fixed">
+        <div class="wrapper">
+
+          <!-- Preloader -->
+          <div class="preloader flex-column justify-content-center align-items-center">
+            <img class="animation__shake" src="{{ asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
+          </div>
+
+
+          <!--Navigation-->
+            @include('layouts.navigation')
+         <!--Sidebar-->
+            @include('layouts.partials.sidebar')
+
+
+            <!-- Page Heading -->
+           @yield('toolbar')
+            <!-- Page Content -->
+            <main>
+                @yield('content')
+            </main>
+            <!-- Footer -->
+            @include('layouts.partials.footer')
+
+            <!-- Control Sidebar -->
+            <aside class="control-sidebar control-sidebar-dark">
+                <!-- Control sidebar content goes here -->
+            </aside>
+            <!-- /.control-sidebar -->
+        </div>
+        <!-- Scripts -->
+        @include('layouts.partials.script')
+
+        @stack('scripts')
+
+    </body>
+</html>
