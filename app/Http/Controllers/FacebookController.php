@@ -10,12 +10,12 @@ use Laravel\Socialite\Facades\Socialite;
 
 class FacebookController extends Controller
 {
-    public function redirectFacebook()
+    public function redirectToFacebook()
     {
         return Socialite::driver('facebook')->redirect();
     }
 
-    public function facebookCallback()
+    public function handlefacebookCallback()
     {
         try {
 
