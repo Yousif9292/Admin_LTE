@@ -6,7 +6,7 @@
         <meta name="csrf-token" content="{{ csrf_token() }}"> --}}
         @yield('styles')
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        <title>{{ config('app.name', 'Admin LTE') }}</title>
         <!--Header Links-->
         @include('layouts.partials.head')
 
@@ -20,6 +20,7 @@
     @include('layouts.partials.header')
     <body class="hold-transition sidebar-mini layout-fixed">
         <div class="wrapper">
+
 
           <!-- Preloader -->
           <div class="preloader flex-column justify-content-center align-items-center">
@@ -42,11 +43,7 @@
 
             <!-- Footer -->
             @include('layouts.partials.footer')
-            <!-- Control Sidebar -->
-            <aside class="control-sidebar control-sidebar-dark">
-                <!-- Control sidebar content goes here -->
-            </aside>
-            <!-- /.control-sidebar -->
+
         </div>
         <!-- Scripts -->
         @include('layouts.partials.script')

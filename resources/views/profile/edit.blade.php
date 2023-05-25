@@ -1,3 +1,4 @@
+@extends('layouts.app');
 @section('styles')
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -7,7 +8,7 @@
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
 @endsection
 @section('content')
-    <div class="content-wrapper px-4 py-2">
+    <div class="content-wrapper px-4 py-2" style="min-height: 1400px;">
         <section class="content-header">
             <div class="container-fluid">
               <div class="row mb-2">
