@@ -89,7 +89,7 @@
                   </div>
               </x-dropdown> --}}
               <!-- Settings Dropdown -->
-              <div class="hidden sm:flex sm:items-center sm:ml-6">
+              <div class="hidden sm:flex sm:items-center sm:ml-6 dropdown d-flex">
                   <x-dropdown aligne="right" width="48">
                       <x-slot name="trigger">
                         <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
