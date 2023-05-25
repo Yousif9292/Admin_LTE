@@ -48,55 +48,55 @@
           </li>
 
 
+
           <!-- Active User -->
           <li class="nav-item dropdown">
-              <div class="dropdown d-flex profile-1">
-                  <a href="javascript:void(0)" data-bs-toggle="dropdown"  class="nav-link leading-none d-flex">
-                      <img src="../dist/img/avatar5.png" alt="profile-user" style="border-radius:100%; height:30px; margin-top:-8px;"
-                          class="avatar  profile-user brround cover-image">
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                      <div class="drop-heading">
-                          <div class="text-center">
-                              <h5 class="text-dark mb-0 fs-14 fw-semibold">Test User</h5>
-                              <small class="text-muted">Senior Admin</small>
-                          </div>
-                      </div>
-                      <div class="dropdown-divider m-0"></div>
-                      <x-dropdown-link :href="route('profile.edit')">
-                          <i class="dropdown-icon fe fe-user"></i>
-                          {{ __('Profile') }}
-                      </x-dropdown-link>
+              {{-- <x-dropdown aligne="right" width="48">
+                  <div class="dropdown d-flex profile-1">
+                      <x-slot name="trigger">
+                          <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
+                              <img src="../dist/img/avatar5.png" alt="profile-user"
+                                  style="border-radius:100%; height:30px; margin-top:-8px;"
+                                  class="avatar  profile-user brround cover-image">
+                          </a>
+                      </x-slot>
+                      <x-slot name="content">
+                          <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                              <div class="drop-heading">
+                                  <div class="text-center">
+                                      <h5 class="text-dark mb-0 fs-14 fw-semibold">Test User</h5>
+                                      <small class="text-muted">Senior Admin</small>
+                                  </div>
+                              </div>
+                              <div class="dropdown-divider m-0"></div>
+                              <x-dropdown-link :href="route('profile.edit')">
+                                  <i class="dropdown-icon fe fe-user"></i>
+                                  {{ __('Profile') }}
+                              </x-dropdown-link>
 
-                      <form method="POST" action="{{ route('logout') }}">
-                          @csrf
+                              <form method="POST" action="{{ route('logout') }}">
+                                  @csrf
 
-                          <x-dropdown-link :href="route('logout')"
-                              onclick="event.preventDefault();
+                                  <x-dropdown-link :href="route('logout')"
+                                      onclick="event.preventDefault();
                                     this.closest('form').submit();">
-                              <i class="dropdown-icon fe fe-alert-circle"></i>
-                              {{ __('Log Out') }}
-                          </x-dropdown-link>
-                      </form>
+                                      <i class="dropdown-icon fe fe-alert-circle"></i>
+                                      {{ __('Log Out') }}
+                                  </x-dropdown-link>
+                              </form>
+                          </div>
+                      </x-slot>
                   </div>
-              </div>
+              </x-dropdown> --}}
               <!-- Settings Dropdown -->
-              {{-- <div class="hidden sm:flex sm:items-center sm:ml-6">
+              <div class="hidden sm:flex sm:items-center sm:ml-6">
                   <x-dropdown aligne="right" width="48">
                       <x-slot name="trigger">
-                          <button
-                              class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                              <div>{{ Auth::user()->name }}</div>
-
-                              <div class="ml-1">
-                                  <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                      viewBox="0 0 20 20">
-                                      <path fill-rule="evenodd"
-                                          d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                          clip-rule="evenodd" />
-                                  </svg>
-                              </div>
-                          </button>
+                        <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
+                            <img src="../dist/img/avatar5.png" alt="profile-user"
+                                style="border-radius:100%; height:30px; margin-top:-8px;"
+                                class="avatar  profile-user brround cover-image">
+                        </a>
                       </x-slot>
                       <x-slot name="content">
                           <x-dropdown-link :href="route('profile.edit')">
@@ -114,7 +114,7 @@
                           </form>
                       </x-slot>
                   </x-dropdown>
-              </div> --}}
+              </div>
           </li>
 
       </ul>
