@@ -33,11 +33,11 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-th"></i>
+            <a href="{{ route('users.index')}}" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
               <p>
-                Widgets
-                <span class="right badge badge-danger">New</span>
+                User
+
               </p>
             </a>
           </li>
