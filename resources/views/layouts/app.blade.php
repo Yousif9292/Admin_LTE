@@ -39,9 +39,9 @@
             <main>
                 @yield('content')
             </main>
+
             <!-- Footer -->
             @include('layouts.partials.footer')
-
             <!-- Control Sidebar -->
             <aside class="control-sidebar control-sidebar-dark">
                 <!-- Control sidebar content goes here -->

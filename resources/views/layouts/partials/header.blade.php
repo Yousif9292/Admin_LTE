@@ -51,52 +51,14 @@
 
           <!-- Active User -->
           <li class="nav-item dropdown">
-              {{-- <x-dropdown aligne="right" width="48">
-                  <div class="dropdown d-flex profile-1">
+              <div class="hidden sm:flex sm:items-center sm:ml-6 dropdown d-flex">
+                  <x-dropdown aligne="right" width="48">
                       <x-slot name="trigger">
                           <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
                               <img src="../dist/img/avatar5.png" alt="profile-user"
                                   style="border-radius:100%; height:30px; margin-top:-8px;"
                                   class="avatar  profile-user brround cover-image">
                           </a>
-                      </x-slot>
-                      <x-slot name="content">
-                          <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                              <div class="drop-heading">
-                                  <div class="text-center">
-                                      <h5 class="text-dark mb-0 fs-14 fw-semibold">Test User</h5>
-                                      <small class="text-muted">Senior Admin</small>
-                                  </div>
-                              </div>
-                              <div class="dropdown-divider m-0"></div>
-                              <x-dropdown-link :href="route('profile.edit')">
-                                  <i class="dropdown-icon fe fe-user"></i>
-                                  {{ __('Profile') }}
-                              </x-dropdown-link>
-
-                              <form method="POST" action="{{ route('logout') }}">
-                                  @csrf
-
-                                  <x-dropdown-link :href="route('logout')"
-                                      onclick="event.preventDefault();
-                                    this.closest('form').submit();">
-                                      <i class="dropdown-icon fe fe-alert-circle"></i>
-                                      {{ __('Log Out') }}
-                                  </x-dropdown-link>
-                              </form>
-                          </div>
-                      </x-slot>
-                  </div>
-              </x-dropdown> --}}
-              <!-- Settings Dropdown -->
-              <div class="hidden sm:flex sm:items-center sm:ml-6 dropdown d-flex">
-                  <x-dropdown aligne="right" width="48">
-                      <x-slot name="trigger">
-                        <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
-                            <img src="../dist/img/avatar5.png" alt="profile-user"
-                                style="border-radius:100%; height:30px; margin-top:-8px;"
-                                class="avatar  profile-user brround cover-image">
-                        </a>
                       </x-slot>
                       <x-slot name="content">
                           <x-dropdown-link :href="route('profile.edit')">
@@ -116,7 +78,6 @@
                   </x-dropdown>
               </div>
           </li>
-
       </ul>
   </nav>
   <!-- /.navbar -->
