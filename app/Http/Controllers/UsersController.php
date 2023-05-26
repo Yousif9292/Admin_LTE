@@ -12,7 +12,19 @@ class UsersController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
+     *
+     *
      */
+    function __construct()
+    {
+         $this->middleware('permission:users-list|users-create|users-edit|users-delete', ['only' => ['index','show']]);
+         $this->middleware('permission:users-create', ['only' => ['create','store']]);
+         $this->middleware('permission:users-edit', ['only' => ['edit','update']]);
+         $this->middleware('permission:users-delete', ['only' => ['destroy']]);
+    }
+
+
+
     public function index(Request $request)
     {
         // $users= user::all();
@@ -42,7 +54,9 @@ class UsersController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+
+        $roles = Role::pluck('name','name')->all();
+        return view('users.create',compact('roles'));
     }
 
     /**
@@ -57,6 +71,7 @@ class UsersController extends Controller
             'name' => 'required',
             'email' => 'required',
             'password' => 'required',
+            'roles' => 'required'
 
         ]);
 
@@ -64,6 +79,8 @@ class UsersController extends Controller
         $users->name = $request->input('name');
         $users->email = $request->input('email');
         $users->password = $request->input('password');
+        $users = User::create($input);
+        $users->assignRole($request->input('roles'));
         $users->save();
         return redirect('/users');
     }
@@ -76,7 +93,8 @@ class UsersController extends Controller
      */
     public function show($id)
     {
-        //
+        $user = User::find($id);
+        return view('users.index',compact('users'));
     }
 
     /**
@@ -88,7 +106,9 @@ class UsersController extends Controller
     public function edit($id)
     {
         $users = user::find($id);
-        return view('users.edit', compact('users'));
+        $roles = Role::pluck('name','name')->all();
+        $userRole = $user->roles->pluck('name','name')->all();
+        return view('users.edit', compact('users','roles','userRole'));
     }
 
     /**
@@ -103,11 +123,16 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
+            'roles' => 'required'
         ]);
         $users = user::find($id);
 
         $users->name = $request->input('name');
         $users->email = $request->input('email');
+        $user->update($input);
+        DB::table('model_has_roles')->where('model_id',$id)->delete();
+
+        $user->assignRole($request->input('roles'));
 
         $users->save();
         return redirect('/users');
