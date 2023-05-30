@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use DataTables;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use DB;
+use Hash;
+use Illuminate\Support\Arr;
 
 class UsersController extends Controller
 {
@@ -17,10 +21,10 @@ class UsersController extends Controller
      */
     function __construct()
     {
-         $this->middleware('permission:users-list|users-create|users-edit|users-delete', ['only' => ['index','show']]);
-         $this->middleware('permission:users-create', ['only' => ['create','store']]);
-         $this->middleware('permission:users-edit', ['only' => ['edit','update']]);
-         $this->middleware('permission:users-delete', ['only' => ['destroy']]);
+         $this->middleware('permission:view-users|', ['only' => ['index','show']]);
+         $this->middleware('permission:create-users', ['only' => ['create','store']]);
+         $this->middleware('permission:edit-users', ['only' => ['edit','update']]);
+         $this->middleware('permission:delete-users', ['only' => ['destroy']]);
     }
 
 
@@ -34,9 +38,9 @@ class UsersController extends Controller
             $data = User::select('id', 'name', 'email')->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm edit">Edit</a>';
+                    $btn = '<a href="' . route('users.edit', $row->id) . '" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm edit">Edit</a>';
 
-                    $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm delete">Delete</a>';
+                    $btn = $btn.' <a href="' .route('users.destroy', $row->id) . '" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm delete">Delete</a>';
 
                     return $btn;
                 })
@@ -75,14 +79,17 @@ class UsersController extends Controller
 
         ]);
 
-        $users = new user;
-        $users->name = $request->input('name');
-        $users->email = $request->input('email');
-        $users->password = $request->input('password');
-        $users = User::create($input);
-        $users->assignRole($request->input('roles'));
-        $users->save();
+        $user = new User;
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->password = bcrypt($request->input('password'));
+
+        $roles = $request->input('roles');
+        $user->assignRole($roles);
+        $user->save();
+
         return redirect('/users');
+
     }
 
     /**
@@ -94,7 +101,7 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('users.index',compact('users'));
+        return view('users.index',compact('user'));
     }
 
     /**
@@ -107,7 +114,7 @@ class UsersController extends Controller
     {
         $users = user::find($id);
         $roles = Role::pluck('name','name')->all();
-        $userRole = $user->roles->pluck('name','name')->all();
+        $userRole = $users->roles->pluck('name','name')->all();
         return view('users.edit', compact('users','roles','userRole'));
     }
 
@@ -123,16 +130,17 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'roles' => 'required'
+            'roles' => 'required',
         ]);
         $users = user::find($id);
 
         $users->name = $request->input('name');
         $users->email = $request->input('email');
-        $user->update($input);
+        $users->roles = $request->input('roles');
+
         DB::table('model_has_roles')->where('model_id',$id)->delete();
 
-        $user->assignRole($request->input('roles'));
+        $users->assignRole($request->input('roles'));
 
         $users->save();
         return redirect('/users');
@@ -146,8 +154,13 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        $users = user::find($id);
-        $users->delete();
-        return redirect()->back();
+        User::find($id)->delete();
+        return redirect()->route('users.index')
+                        ->with('success','User deleted successfully');
+
+
+        // $users = user::find($id);
+        // $users->delete();
+        // return redirect()->back();
     }
 }

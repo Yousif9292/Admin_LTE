@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
 @endsection
 @section('content')
-    <div class="content-wrapper px-4 py-2" style="min-height: 1400px;">
+    <div style="min-height: 1400px;">
         <section class="content-header">
             <div class="container-fluid">
               <div class="row mb-2">

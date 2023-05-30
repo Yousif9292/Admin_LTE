@@ -27,7 +27,7 @@
                       <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                       <li class="nav-item menu-open">
-                          <a href="#" class="nav-link active">
+                          <a href="{{ route('dashboard')}}" class="nav-link active">
                               <i class="nav-icon fas fa-tachometer-alt"></i>
                               <p>
                                   Dashboard
@@ -39,20 +39,28 @@
                           <a href="{{ route('users.index') }}" class="nav-link">
                               <i class="nav-icon fas fa-user"></i>
                               <p>
-                                  User
+                                  Users
 
                               </p>
                           </a>
                       </li>
                       <li class="nav-item">
-                        <a href="{{ route('users.index') }}" class="nav-link">
-                            <i class="nav-icon fas fa-"></i>
+                            <a class="nav-link" href="{{ route('roles.index') }}">
+                                <i class="nav-icon fas fa-users"></i>
                             <p>
                                 Roles
-
                             </p>
                         </a>
                     </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('products.index') }}">
+                            <i class="nav-icon fa fa-truck"></i>
+                        <p>
+                            Manage Products
+                        </p>
+                    </a>
+                </li>
                   </ul>
               </nav>
               <!-- /.sidebar-menu -->

@@ -6,7 +6,7 @@
 @extends('layouts.app');
 
 @section('content')
-    <div class="content-wrapper px-4 py-2">
+
         <button style="float: right; margin-bottom:10px; margin-top: 20px;border: none;padding: 0px;">
             <a class="btn btn-small btn-success" href="{{ route('users.create') }}">Create a user</a>
         </button>
@@ -25,7 +25,7 @@
             <tbody>
             </tbody>
         </table>
-    </div>
+
     @push('scripts')
         <!-- Datatable -->
         {{--   --}}

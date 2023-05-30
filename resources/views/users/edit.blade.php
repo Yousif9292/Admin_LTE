@@ -1,6 +1,6 @@
 @extends('layouts.app');
 @section('content')
-<div class="content-wrapper px-4 py-2">
+
 {{$errors}}
     <form method="POST" style="border: 1px solid black" action="{{route('users.update', $users->id)}}">
         @method('PUT')
@@ -15,8 +15,18 @@
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" name="email" value={{$users->email}}><br/>
             </div>
+            <div class="col-xs-12 col-sm-12 col-md-12">
+                <div class="form-group">
+                    <strong>Role:</strong>
+                    <select name="roles[]" class="form-control">
+                        @foreach($roles as $roleId => $roleName)
+                            <option value="{{ $roleId }}">{{ $roleName }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
         <button type="submit" style="background-color: blue; margin-left:485px " class="btn btn-primary"  >Update</button>
     </form>
 
-</div>
+
 @endsection
