@@ -55,7 +55,7 @@
                   <x-dropdown aligne="right" width="48">
                       <x-slot name="trigger">
                           <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
-                              <img src="../dist/img/avatar5.png" alt="profile-user"
+                              <img src="/dist/img/avatar5.png" alt="profile-user"
                                   style="border-radius:100%; height:30px; margin-top:-8px;"
                                   class="avatar  profile-user brround cover-image">
                           </a>
