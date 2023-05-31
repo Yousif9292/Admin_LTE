@@ -24,7 +24,7 @@ class UsersController extends Controller
          $this->middleware('permission:view-users|', ['only' => ['index','show']]);
          $this->middleware('permission:create-users', ['only' => ['create','store']]);
          $this->middleware('permission:edit-users', ['only' => ['edit','update']]);
-         $this->middleware('permission:delete-users', ['only' => ['destroy']]);
+         $this->middleware('permission:destroy-users', ['only' => ['destroy']]);
     }
 
 
@@ -38,9 +38,13 @@ class UsersController extends Controller
             $data = User::select('id', 'name', 'email')->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $btn = '<a href="' . route('users.edit', $row->id) . '" data-toggle="tooltip" data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm edit">Edit</a>';
+                    $btn = '<a href="' . route('users.edit', $row->id) . '"  class="edit btn btn-primary btn-sm ">Edit</a>';
 
-                    $btn = $btn.' <a href="' .route('users.destroy', $row->id) . '" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm delete">Delete</a>';
+                    $btn = $btn.  ' <form action="' .route('users.destroy', $row->id) . '" method="POST" style="display: inline;">
+                    ' . csrf_field() . '
+                    ' . method_field('DELETE') . '
+                    <button type="submit" class="btn btn-danger btn-sm delete" onclick="return confirm(\'Are you sure you want to delete this user?\')">Delete</button>
+                </form>';
 
                     return $btn;
                 })
@@ -130,17 +134,19 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required',
-            'roles' => 'required',
+            'roles' => 'required'
+
+
         ]);
-        $users = user::find($id);
+        $users = User::find($id);
 
         $users->name = $request->input('name');
         $users->email = $request->input('email');
-        $users->roles = $request->input('roles');
 
         DB::table('model_has_roles')->where('model_id',$id)->delete();
 
         $users->assignRole($request->input('roles'));
+
 
         $users->save();
         return redirect('/users');
@@ -154,10 +160,10 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        User::find($id)->delete();
-        return redirect()->route('users.index')
-                        ->with('success','User deleted successfully');
 
+        DB::table("users")->where('id',$id)->delete();
+        return redirect()->route('users.index')
+                        ->with('success','user deleted successfully');
 
         // $users = user::find($id);
         // $users->delete();

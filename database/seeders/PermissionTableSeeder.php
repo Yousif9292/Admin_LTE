@@ -19,7 +19,7 @@ class PermissionTableSeeder extends Seeder
             'view-users',
             'create-users',
             'edit-users',
-            'delete-users',
+            'destroy-users',
 
 
             'view-role',

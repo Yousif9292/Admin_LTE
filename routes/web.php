@@ -48,6 +48,8 @@ Route::middleware('auth')->group(function () {
 Route::resource('/users', UsersController::class);
 Route::get('users', [UsersController::class, 'index'])->name('users.index');
 
+
+
 require __DIR__.'/auth.php';
 
 Route::controller(GoogleController::class)->group(function(){
