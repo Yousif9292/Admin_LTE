@@ -45,6 +45,7 @@ class RoleController extends Controller
     {
         $permission = Permission::get();
         return view('roles.create',compact('permission'));
+
     }
 
     /**
@@ -54,18 +55,22 @@ class RoleController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required|unique:roles,name',
-            'permission' => 'required',
-        ]);
+{
+    $this->validate($request, [
+        'name' => 'required|unique:roles,name',
+        'permission' => 'required',
+    ]);
 
-        $role = Role::create(['name' => $request->input('name')]);
-        $role->syncPermissions($request->input('permission'));
+    $role = Role::create([
+        'name' => $request->input('name'),
+        'deleteable' => 1, // Set deleteable value to 1
+    ]);
 
-        return redirect()->route('roles.index')
-                        ->with('success','Role created successfully');
-    }
+    $role->syncPermissions($request->input('permission'));
+
+    return redirect()->route('roles.index')
+                    ->with('success', 'Role created successfully');
+}
     /**
      * Display the specified resource.
      *
