@@ -9,38 +9,60 @@
     <link rel="stylesheet" href="{{ asset('plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
 
+    <!-- Buttons -->
+    <link href="https://nightly.datatables.net/buttons/css/buttons.dataTables.css?_=c6b24f8a56e04fcee6105a02f4027462.css" rel="stylesheet" type="text/css" />
+
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 @endsection
 @extends('layouts.app');
 
 @section('content')
-    <button style="float: right; margin-bottom:10px; margin-top: 20px;border: none;padding: 0px;">
-        <a class="btn btn-small btn-success" href="{{ route('users.create') }}">Create a user</a>
-    </button>
-    <h1 style="font-size: 30px;margin-top:20px">Users</h1>
+    <div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="pull-left">
+                <h2>Users Management</h2>
+            </div>
+            <div class="pull-right">
+                @can('role-create')
+                    <button style="float: right; margin-bottom:10px; margin-top: 20px;border: none;padding: 0px;">
+                        <a class="btn btn-small btn-success" href="{{ route('users.create') }}">Create a user</a>
+                    </button>
+                @endcan
+            </div>
+        </div>
+    </div>
+
+
+
 
     <!-- user table -->
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">User Data</h3>
+        </div>
+        <!-- /.card-header -->
+        <div class="card-body">
+            <table class="table table-striped table-bordered" id="usertable">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th colspan="2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <table class="table table-striped table-bordered" id="usertable">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th colspan="2">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
 
     @push('scripts')
-
-
-        <script src="{{asset('plugins/jquery/jquery.min.js"></script')}}">
-
-        <script src="{{asset('plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <script src="{{ asset('plugins/jquery/jquery.min.js"></script') }}">
+            < script src = "{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}" >
+        </script>
         <!-- DataTables  & Plugins -->
         <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -54,12 +76,15 @@
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+
+
+
         <script>
             //
             //     headers: {
 
             var table = $('#usertable').DataTable({
-                dom: "Bfrtip",
+                dom: "Bfrtip ",
                 serverSide: true,
                 ajax: "{{ route('users.index') }}",
                 buttons: ["copy", "pdf", "print", ],
@@ -82,6 +107,7 @@
                         searchable: false
                     },
                 ]
+
             });
         </script>
     @endpush

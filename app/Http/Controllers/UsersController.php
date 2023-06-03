@@ -43,7 +43,8 @@ class UsersController extends Controller
                     $btn = $btn.  ' <form action="' .route('users.destroy', $row->id) . '" method="POST" style="display: inline;">
                     ' . csrf_field() . '
                     ' . method_field('DELETE') . '
-                    <button type="submit" class="btn btn-danger btn-sm delete" onclick="return confirm(\'Are you sure you want to delete this user?\')">Delete</button>
+
+                    <button type="submit" style="background-color:#cf1010" class="btn btn-danger btn-sm delete" onclick="return confirm(\'Are you sure you want to delete this user?\')">Delete</button>
                 </form>';
 
                     return $btn;

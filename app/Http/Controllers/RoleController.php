@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use App\Models\User;
+use App\Models\Product;
+use App\Models\PermissionGroup;
+
 use DB;
 
 class RoleController extends Controller
@@ -43,8 +47,11 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permission = Permission::get();
-        return view('roles.create',compact('permission'));
+        $usersPermissions = Permission::where('permission_group_id', 1)->get();
+        $rolesPermissions = Permission::where('permission_group_id', 2)->get();
+        $productsPermissions = Permission::where('permission_group_id', 3)->get();
+
+        return view('roles.create', compact('usersPermissions', 'rolesPermissions', 'productsPermissions'));
 
     }
 
