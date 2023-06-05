@@ -108,7 +108,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        $(document).ready(function() {
+$(document).ready(function() {
             $('.select-all').click(function() {
                 var list = $(this).data('list');
                 $('input[name="' + list + '[]"]').prop('checked', this.checked);
