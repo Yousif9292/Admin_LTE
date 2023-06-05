@@ -1,13 +1,16 @@
 @extends('layouts.app')
 
+
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
+
             <div class="pull-right">
                 <a class="btn btn-primary" href="{{ route('roles.index') }}"> Back</a>
             </div>
         </div>
     </div>
+
 
     @if (count($errors) > 0)
         <div class="alert alert-danger">
@@ -28,6 +31,7 @@
                 {!! Form::text('name', null, ['placeholder' => 'Name', 'class' => 'form-control']) !!}
             </div>
         </div>
+        <!-- Display permission groups and permissions for each role -->
 
         <div class="container">
             <div class="row">
@@ -38,17 +42,17 @@
                         </li>
                         <li class="list-group-item">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input select-all" data-list="user_permissions">
+                                <input type="checkbox" class="form-check-input select-all" data-list="user_permissions[]">
                                 <b>Select All</b>
                             </label>
                         </li>
                         @foreach ($usersPermissions as $permission)
-                            <li class="list-group-item">
-                                <label class="form-check-label">
-                                    {!! Form::checkbox('permission[]', $permission->id, null, ['class' => 'form-check-input']) !!}
-                                    {{ $permission->name }}
-                                </label>
-                            </li>
+                        <li class="list-group-item">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="user_permissions[]" value="{{ $permission->id }}">
+                                {{ $permission->name }}
+                            </label>
+                        </li>
                         @endforeach
                     </ul>
                 </div>
@@ -60,17 +64,17 @@
                         </li>
                         <li class="list-group-item">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input select-all" data-list="role_permissions">
+                                <input type="checkbox" class="form-check-input select-all" data-list="role_permissions[]">
                                 <b>Select All</b>
                             </label>
                         </li>
                         @foreach ($rolesPermissions as $permission)
-                            <li class="list-group-item">
-                                <label class="form-check-label">
-                                    {!! Form::checkbox('permission[]', $permission->id, null, ['class' => 'form-check-input']) !!}
-                                    {{ $permission->name }}
-                                </label>
-                            </li>
+                        <li class="list-group-item">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="role_permissions[]" value="{{ $permission->id }}">
+                                {{ $permission->name }}
+                            </label>
+                        </li>
                         @endforeach
                     </ul>
                 </div>
@@ -82,25 +86,27 @@
                         </li>
                         <li class="list-group-item">
                             <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input select-all" data-list="product_permissions">
+                                <input type="checkbox" class="form-check-input select-all" data-list="product_permissions[]">
                                 <b>Select All</b>
                             </label>
                         </li>
                         @foreach ($productsPermissions as $permission)
-                            <li class="list-group-item">
-                                <label class="form-check-label">
-                                    {!! Form::checkbox('permission[]', $permission->id, null, ['class' => 'form-check-input']) !!}
-                                    {{ $permission->name }}
-                                </label>
-                            </li>
+                        <li class="list-group-item">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" name="product_permissions[]" value="{{ $permission->id }}">
+                                {{ $permission->name }}
+                            </label>
+                        </li>
                         @endforeach
                     </ul>
                 </div>
             </div>
         </div>
 
+        <!-- Display permission groups for each user -->
+    &nbsp;
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-            <button type="submit" style="background-color: #007bff;" class="btn btn-primary">Submit</button>
+            <button type="submit" style=" background-color: #007bff;" class="btn btn-primary">Submit</button>
         </div>
     </div>
     {!! Form::close() !!}
@@ -108,16 +114,17 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-$(document).ready(function() {
+        $(document).ready(function() {
             $('.select-all').click(function() {
                 var list = $(this).data('list');
-                $('input[name="' + list + '[]"]').prop('checked', this.checked);
+                $('input[name="' + list + '"]').prop('checked', this.checked);
             });
 
             $('input[name="user_permissions[]"], input[name="role_permissions[]"], input[name="product_permissions[]"]')
                 .click(function() {
                     var list = $(this).closest('ul').find('.select-all').data('list');
-                    if ($('input[name="' + list + '[]"]:checked').length === $('input[name="' + list + '[]"]').length) {
+                    if ($('input[name="' + list + '"]:checked').length === $('input[name="' + list + '"]')
+                        .length) {
                         $('input[data-list="' + list + '"]').prop('checked', true);
                     } else {
                         $('input[data-list="' + list + '"]').prop('checked', false);
@@ -126,6 +133,7 @@ $(document).ready(function() {
         });
     </script>
 @endsection
+
 
 
 

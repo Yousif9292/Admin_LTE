@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
 
     <!-- Buttons -->
-    <link href="https://nightly.datatables.net/buttons/css/buttons.dataTables.css?_=c6b24f8a56e04fcee6105a02f4027462.css" rel="stylesheet" type="text/css" />
+    <link href="https://nightly.datatables.net/buttons/css/buttons.dataTables.css?_=c6b24f8a56e04fcee6105a02f4027462.css"
+        rel="stylesheet" type="text/css" />
 
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
@@ -63,6 +64,7 @@
         <script src="{{ asset('plugins/jquery/jquery.min.js"></script') }}">
             < script src = "{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}" >
         </script>
+        //
         <!-- DataTables  & Plugins -->
         <script src="{{ asset('plugins/datatables/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
@@ -76,8 +78,8 @@
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
         <script src="{{ asset('plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-
-
+        // {{-- sweet Alert --}}
+        <script src="{{ asset('https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js') }}"></script>
 
         <script>
             //
@@ -109,6 +111,48 @@
                 ]
 
             });
+
+            function deleteUser(event, userId) {
+                event.preventDefault(); // Prevent the default form submission
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this user!',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Send the AJAX request to delete the user
+                        $.ajax({
+                            url: '/users/' + userId,
+                            type: 'POST',
+                            data: {
+                                '_method': 'DELETE',
+                                '_token': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            success: function(response) {
+                                // Reload or update the DataTable after successful deletion
+                                $('#usertable').DataTable().ajax.reload();
+                                Swal.fire(
+                                    'Deleted!',
+                                    'The user has been deleted.',
+                                    'success'
+                                );
+                            },
+                            error: function(xhr) {
+                                Swal.fire(
+                                    'Error!',
+                                    'An error occurred while deleting the user.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
+            }
         </script>
     @endpush
 @endsection

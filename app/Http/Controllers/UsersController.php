@@ -40,11 +40,11 @@ class UsersController extends Controller
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="' . route('users.edit', $row->id) . '"  class="edit btn btn-primary btn-sm ">Edit</a>';
 
-                    $btn = $btn.  ' <form action="' .route('users.destroy', $row->id) . '" method="POST" style="display: inline;">
+                    $btn = $btn.  '  <form action="' .route('users.destroy', $row->id) . '" method="POST" style="display: inline;">
                     ' . csrf_field() . '
                     ' . method_field('DELETE') . '
 
-                    <button type="submit" style="background-color:#cf1010" class="btn btn-danger btn-sm delete" onclick="return confirm(\'Are you sure you want to delete this user?\')">Delete</button>
+                    <button type="submit" style="background-color:#cf1010" class="btn btn-danger btn-sm delete" onclick="deleteUser(event, '.$row->id.')">Delete</button>
                 </form>';
 
                     return $btn;
@@ -64,7 +64,7 @@ class UsersController extends Controller
     public function create()
     {
 
-        $roles = Role::pluck('name','name')->all();
+        $roles = Role::pluck('name','name' ,  'deleteable', 1)->all();
         return view('users.create',compact('roles'));
     }
 
