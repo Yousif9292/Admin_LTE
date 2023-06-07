@@ -57,8 +57,14 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
+        if ($category->children()->exists()) {
+            // Remove the parent category association from its child categories
+            $category->children()->update(['parent_id' => null]);
+        }
+
         $category->delete();
 
         return redirect()->route('categories.index')->with('success', 'Category deleted successfully.');
     }
+
 }
