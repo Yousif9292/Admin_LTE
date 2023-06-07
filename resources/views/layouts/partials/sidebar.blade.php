@@ -51,6 +51,15 @@
                         </p>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('categories.index') }}">
+                        <i class="nav-icon fa fa-truck"></i>
+                    <p>
+                        Manage Categories
+                    </p>
+                </a>
+            </li>
                   </ul>
               </nav>
               <!-- /.sidebar-menu -->
