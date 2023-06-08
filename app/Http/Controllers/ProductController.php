@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\Category;
+use Illuminate\Http\UploadedFile;
+
 
 class ProductController extends Controller
 {
@@ -26,10 +29,10 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = Product::latest()->paginate(5);
-        return view('products.index',compact('products'))
-            ->with('i', (request()->input('page', 1) - 1) * 5);
+        $products = Product::all();
+        return view('products.index', compact('products'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -37,8 +40,9 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function create()
-    {
-        return view('products.create');
+    { $categories = Category::all();
+
+        return view('products.create', compact('categories'));
     }
 
     /**
@@ -49,16 +53,42 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        request()->validate([
-            'name' => 'required',
-            'detail' => 'required',
-        ]);
+        $request->validate([
+        'image' => 'nullable|image',
+        'product_name' => 'required',
+        'purchase_price' => 'required|numeric',
+        'sale_price' => 'required|numeric',
+        'discount' => 'required|numeric',
+        'status' => 'required|boolean',
+        'category_id' => 'required|exists:categories,id',
+    ]);
 
-        Product::create($request->all());
 
-        return redirect()->route('products.index')
-                        ->with('success','Product created successfully.');
+
+    // Create a new product instance
+    $product = new Product;
+    $product->product_name = $request->product_name;
+    $product->purchase_price = $request->purchase_price;
+    $product->sale_price = $request->sale_price;
+    $product->discount = $request->discount;
+    $product->status = $request->status;
+    $product->category_id = $request->category_id;
+
+    // Handle the image upload if provided
+    if ($request->hasFile('image')) {
+        $image = $request->file('image');
+        $imagePath = 'images/' . $image->getClientOriginalName(); // Specify the destination path and file name
+        $image->move(public_path('images'), $imagePath); // Move the uploaded image to the specified location
+        $product->image = $imagePath;
+
     }
+
+    // Save the product
+    $product->save();
+
+    // Redirect to the index page with a success message
+    return redirect()->route('products.index')->with('success', 'Product created successfully');
+}
 
     /**
      * Display the specified resource.
@@ -79,7 +109,8 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        return view('products.edit',compact('product'));
+        $product = Product::findOrFail($id);
+        return view('products.edit', compact('product'));
     }
 
     /**
@@ -89,17 +120,41 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $id)
     {
-         request()->validate([
-            'name' => 'required',
-            'detail' => 'required',
+        $request->validate([
+            'image' => 'nullable|image',
+            'product_name' => 'required',
+            'purchase_price' => 'required|numeric',
+            'sale_price' => 'required|numeric',
+            'discount' => 'required|numeric',
+            'status' => 'required|boolean',
+            'category_id' => 'required|exists:categories,id',
         ]);
 
-        $product->update($request->all());
 
-        return redirect()->route('products.index')
-                        ->with('success','Product updated successfully');
+
+        // Find the product to update
+        $product = Product::findOrFail($id);
+        $product->product_name = $request->product_name;
+        $product->purchase_price = $request->purchase_price;
+        $product->sale_price = $request->sale_price;
+        $product->discount = $request->discount;
+        $product->status = $request->status;
+        $product->category_id = $request->category_id;
+
+        // Handle the image update if provided
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = $image->store('public\images');
+            $product->image = $imagePath;
+        }
+
+        // Save the updated product
+        $product->save();
+
+        // Redirect to the index page with a success message
+        return redirect()->route('products.index')->with('success', 'Product updated successfully');
     }
 
     /**
@@ -110,9 +165,12 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+
+
+        // Delete the product
         $product->delete();
 
-        return redirect()->route('products.index')
-                        ->with('success','Product deleted successfully');
+        // Redirect to the index page with a success message
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
     }
 }
