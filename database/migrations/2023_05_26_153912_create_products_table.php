@@ -21,9 +21,10 @@ return new class extends Migration
             $table->decimal('sale_price', 8, 2);
             $table->decimal('discount', 8, 2);
             $table->boolean('status')->default(true);
-            $table->unsignedBigInteger('category_id');
-            $table->foreign('category_id')->references('id')->on('categories');
+            $table->unsignedBigInteger('category_id'); // Make sure the data type matches the ID column in the categories table
             $table->timestamps();
+
+            $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 

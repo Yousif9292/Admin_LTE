@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Categories Management</h2>
+                <h2 class="h4">Categories Management</h2>
             </div>
             <div class="pull-right">
                 @can('role-create')
@@ -52,6 +52,7 @@
                         <th>Sale Price</th>
                         <th>Discount</th>
                         <th>Status</th>
+                        <th>Category</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -59,24 +60,32 @@
                     @foreach ($products as $key => $product)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td> <img src="{{ asset('/' . $product->image) }}" alt="Product Image" width="50"></td>
+                            <td> <img src="{{ asset('images/' . $product->image) }}" alt="Product Image" width="50"></td>
                             <td>{{ $product->product_name }}</td>
                             <td>{{ $product->purchase_price }}</td>
                             <td>{{ $product->sale_price }}</td>
                             <td>{{ $product->discount }}</td>
-                            <td>{{ $product->status }}</td>
+                            <td>
+                                @if ($product->status)
+                                    <span class="badge badge-success ">Active</span>
+                                @else
+                                    <span class="badge badge-danger">Inactive</span>
+                                @endif
+                            </td>
+                            <td>{{ $product->category->name }}</td>
                             <td>
 
-                                <a class="btn btn-info" href="{{ route('products.show', $product->id) }}">Show</a>
+
                                 @can('product-edit')
-                                    <a class="btn btn-primary" href="{{ route('products.edit', $product->id) }}">Edit</a>
+                                    <a class="btn btn-primary btn-sm"
+                                        href="{{ route('products.edit', $product->id) }}">Edit</a>
                                 @endcan
 
                                 <form action="{{ route('products.destroy', $product) }}" method="POST"
                                     id="deleteForm{{ $product->id }}" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" class="btn btn-danger" style="background-color:#cf1010"
+                                    <button type="button" class="btn btn-danger btn-sm" style="background-color:#cf1010"
                                         onclick="deleteCategoryConfirmation({{ $product->id }})">Delete</button>
                                 </form>
                             </td>
@@ -122,63 +131,22 @@
                 });
             });
             // sweet Alert
-
-            function deleteCategoryConfirmation(categoryId, hasParent, hasChildren) {
-                if (hasChildren) {
-                    Swal.fire({
-                        title: 'Delete Child Category',
-                        text: 'This category is a child category. Are you sure you want to delete it?',
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#d33',
-                        cancelButtonColor: '#3085d6',
-                        confirmButtonText: 'Yes, delete it!',
-                        cancelButtonText: 'Cancel'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            document.getElementById('deleteForm' + categoryId).submit();
-                        }
-                    });
-                } else {
-                    if (hasParent) {
-                        Swal.fire({
-                            title: 'Delete Parent Category',
-                            text: 'This category has child categories. Are you sure you want to delete it?',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d33',
-                            cancelButtonColor: '#3085d6',
-                            confirmButtonText: 'Yes, delete it!',
-                            cancelButtonText: 'Cancel'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                document.getElementById('deleteForm' + categoryId).submit();
-                            }
-                        });
-                    } else {
-                        Swal.fire({
-                            title: 'Delete Parent Category',
-                            text: 'Are you sure you want to delete this parent category?',
-                            icon: 'warning',
-                            showCancelButton: true,
-                            confirmButtonColor: '#d33',
-                            cancelButtonColor: '#3085d6',
-                            confirmButtonText: 'Yes, delete it!',
-                            cancelButtonText: 'Cancel'
-                        }).then((result) => {
-                            if (result.isConfirmed) {
-                                Swal.fire({
-                                    title: 'Parent Category Deleted',
-                                    text: 'The parent category has been deleted.',
-                                    icon: 'success'
-                                }).then(() => {
-                                    document.getElementById('deleteForm' + categoryId).submit();
-                                });
-                            }
-                        });
-                    }
+            function deleteCategoryConfirmation(productId) {
+               Swal.fire({
+                title: 'Are you sure?',
+                text: 'Are you confirm to delete this product',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes Delete it!',
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    $('#deleteForm' + productId).submit();
                 }
-            }
+            });
+        }
+
         </script>
     @endpush
 @endsection

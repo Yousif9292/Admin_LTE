@@ -16,13 +16,13 @@
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 @endsection
-@extends('layouts.app');
+@extends('layouts.app')
 
 @section('content')
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Users Management</h2>
+                <h2 class="h4">Users Management</h2>
             </div>
             <div class="pull-right">
                 @can('role-create')
@@ -82,77 +82,76 @@
         <script src="{{ asset('https://cdn.jsdelivr.net/npm/sweetalert2@11.7.10/dist/sweetalert2.all.min.js') }}"></script>
 
         <script>
-            //
-            //     headers: {
+            $(document).ready(function() {
+                var table = $('#usertable').DataTable({
+                    dom: "Bfrtip ",
+                    serverSide: true,
+                    ajax: "{{ route('users.index') }}",
+                    buttons: ["copy", "pdf", "print", ],
+                    columns: [{
+                            data: 'DT_RowIndex',
+                            name: 'DT_RowIndex'
+                        },
+                        {
+                            data: 'name',
+                            name: 'name'
+                        },
+                        {
+                            data: 'email',
+                            name: 'email'
+                        },
+                        {
+                            data: 'action',
+                            name: 'action',
+                            orderable: false,
+                            searchable: false
+                        },
+                    ]
 
-            var table = $('#usertable').DataTable({
-                dom: "Bfrtip ",
-                serverSide: true,
-                ajax: "{{ route('users.index') }}",
-                buttons: ["copy", "pdf", "print", ],
-                columns: [{
-                        data: 'DT_RowIndex',
-                        name: 'DT_RowIndex'
-                    },
-                    {
-                        data: 'name',
-                        name: 'name'
-                    },
-                    {
-                        data: 'email',
-                        name: 'email'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
-                ]
-
-            });
-
-            function deleteUser(event, userId) {
-                event.preventDefault(); // Prevent the default form submission
-
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: 'You will not be able to recover this user!',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Send the AJAX request to delete the user
-                        $.ajax({
-                            url: '/users/' + userId,
-                            type: 'POST',
-                            data: {
-                                '_method': 'DELETE',
-                                '_token': $('meta[name="csrf-token"]').attr('content')
-                            },
-                            success: function(response) {
-                                // Reload or update the DataTable after successful deletion
-                                $('#usertable').DataTable().ajax.reload();
-                                Swal.fire(
-                                    'Deleted!',
-                                    'The user has been deleted.',
-                                    'success'
-                                );
-                            },
-                            error: function(xhr) {
-                                Swal.fire(
-                                    'Error!',
-                                    'An error occurred while deleting the user.',
-                                    'error'
-                                );
-                            }
-                        });
-                    }
                 });
-            }
+
+                function deleteUser(event, userId) {
+                    event.preventDefault(); // Prevent the default form submission
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: 'You will not be able to recover this user!',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Send the AJAX request to delete the user
+                            $.ajax({
+                                url: '/users/' + userId,
+                                type: 'POST',
+                                data: {
+                                    '_method': 'DELETE',
+                                    '_token': $('meta[name="csrf-token"]').attr('content')
+                                },
+                                success: function(response) {
+                                    // Reload or update the DataTable after successful deletion
+                                    $('#usertable').DataTable().ajax.reload();
+                                    Swal.fire(
+                                        'Deleted!',
+                                        'The user has been deleted.',
+                                        'success'
+                                    );
+                                },
+                                error: function(xhr) {
+                                    Swal.fire(
+                                        'Error!',
+                                        'An error occurred while deleting the user.',
+                                        'error'
+                                    );
+                                }
+                            });
+                        }
+                    });
+                };
+            });
         </script>
     @endpush
 @endsection

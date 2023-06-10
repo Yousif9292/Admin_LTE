@@ -4,12 +4,12 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2 class="h4">Create New Product</h2>
+                <h2 class="h4">Create New Coupon</h2>
             </div>
             <div class="pull-right">
                 @can('role-create')
                 <button style="float: right; margin-bottom:10px; margin-top: -20px;border: none;padding: 0px;">
-                    <a class="btn btn-primary" href="{{ route('products.index') }}"> Back</a>
+                    <a class="btn btn-primary" href="{{ route('coupons.index') }}"> Back</a>
                 </button>
             @endcan
 
@@ -28,37 +28,31 @@
         </div>
     @endif
 
-    <form action="{{ route('products.store') }}" method="POST"  enctype="multipart/form-data" >
+    <form action="{{ route('coupons.store') }}" method="POST"  enctype="multipart/form-data" >
         @csrf
         <div class="row">
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Image:</strong>
-                    <input type="file" name="image" class="form-control-file">
+                    <strong>Code:</strong>
+                    <input type="text" name="code" id="code" class="form-control" placeholder="Enter Coupon Code">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Product Name:</strong>
-                    <input type="text" name="product_name" class="form-control" placeholder="Product Name">
+                    <strong>Start Date::</strong>
+                    <input type="date" name="start_date" id="start_date" class="form-control" placeholder="Start Date">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Purchase Price:</strong>
-                    <input type="text" name="purchase_price" class="form-control" placeholder="Purchase Price">
+                    <strong>Expiry Date:</strong>
+                    <input type="date" name="expiry_date" id="expiry_date" class="form-control" placeholder="Expiry Date">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
                 <div class="form-group">
-                    <strong>Sale Price:</strong>
-                    <input type="text" name="sale_price" class="form-control" placeholder="Sale Price">
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Discount:</strong>
-                    <input type="number" name="discount" class="form-control" id="discount_price" placeholder="Discount">
+                    <strong>Discount Amount:</strong>
+                    <input  type="number" name="discount_price" id="discount_price"  class="form-control" placeholder="Discount Amount">
                 </div>
             </div>
             <div class="col-xs-12 col-sm-12 col-md-12">
@@ -67,17 +61,6 @@
                     <select name="status" class="form-control">
                         <option value="1">Active</option>
                         <option value="0">Inactive</option>
-                    </select>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-12">
-                <div class="form-group">
-                    <strong>Category:</strong>
-                    <select name="category_id" class="form-control">
-                        <option value="">Select Category</Canvas></option>
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
                     </select>
                 </div>
             </div>

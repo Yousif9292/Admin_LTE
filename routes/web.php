@@ -9,6 +9,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CouponController;
 
 
 
@@ -36,6 +37,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('users', UsersController::class);
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
+    Route::resource('coupons', CouponController::class);
+
+
 });
 Route::get('/dashboard', function () {
     return view('dashboard');

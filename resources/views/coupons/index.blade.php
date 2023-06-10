@@ -18,12 +18,12 @@
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="pull-left">
-                <h2>Categories Management</h2>
+                <h2 class="h4">Coupons Management</h2>
             </div>
             <div class="pull-right">
                 @can('role-create')
                     <button style="float: right; margin-bottom:10px; margin-top: 20px;border: none;padding: 0px;">
-                        <a class="btn btn-success" href="{{ route('categories.create') }}"> Create New Catagory</a>
+                        <a class="btn btn-success" href="{{ route('coupons.create') }}"> Create New Coupons</a>
                     </button>
                 @endcan
             </div>
@@ -39,41 +39,47 @@
 
     <div class="card">
         <div class="card-header">
-            <h3 class="card-title">Categories Data</h3>
+            <h3 class="card-title">Coupons Data</h3>
         </div>
-
-        <!-- /.card-header -->
         <div class="card-body">
-            <table id="t1" class="table table-bordered table-striped">
+            <table class="table table-bordered" id="ptable">
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
-                        <th>Parent ID</th>
-                        <th width="280px">Action</th>
+                        <th>Code</th>
+                        <th>Start Date</th>
+                        <th>Expiry Date</th>
+                        <th>Discount Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $key => $category)
+                    @foreach ($coupons as $key => $coupon)
                         <tr>
                             <td>{{ ++$key }}</td>
-                            <td>{{ $category->name }}</td>
+                            <td>{{ $coupon->code }}</td>
+                            <td>{{ $coupon->start_date->format('d-m-Y') }}</td>
+                            <td>{{ $coupon->expiry_date->format('d-m-Y') }}</td>
+                            <td>{{ $coupon->discount_price }}</td>
                             <td>
-                                @if ($category->parent)
-                                    {{ $category->parent->name }}
+                                @if ($coupon->status)
+                                    <span class="badge badge-success ">Active</span>
                                 @else
-                                    N/A
+                                    <span class="badge badge-danger">Inactive</span>
                                 @endif
                             </td>
-
                             <td>
-                                <a class="btn btn-info btn-sm" href="{{ route('categories.show', $category->id) }}">Show</a>
-                                <a class="btn btn-primary btn-sm" href="{{ route('categories.edit', $category->id) }}">Edit</a>
-                                <form action="{{ route('categories.destroy', $category) }}" method="POST" id="deleteForm{{ $category->id }}" style="display: inline;">
+                                @can('product-edit')
+                                    <a class="btn btn-primary btn-sm" href="{{ route('coupons.edit', $coupon) }}">Edit</a>
+                                @endcan
+
+                                <form action="{{ route('coupons.destroy', $coupon) }}" method="POST"
+                                    id="deleteForm{{ $coupon->id }}" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="button" class="btn btn-danger btn-sm" style="background-color:#cf1010"
-                                        onclick="deleteCategoryConfirmation({{ $category->id }}, {{ $category->parent_id ? 'true' : 'false' }})">Delete</button>
+                                        onclick="deleteCategoryConfirmation({{ $coupon->id }})">Delete</button>
                                 </form>
                             </td>
                         </tr>
@@ -111,7 +117,7 @@
         <script>
             // datatable
             $(document).ready(function() {
-                var table = $('#t1').DataTable({
+                var table = $('#ptable').DataTable({
                     dom: "Bfrtip ",
                     buttons: ["copy", "pdf", "print", ],
 
@@ -119,62 +125,70 @@
             });
             // sweet Alert
 
-    function deleteCategoryConfirmation(categoryId, hasParent,hasChildren) {
-        if (hasChildren) {
-            Swal.fire({
-                title: 'Delete Child Category',
-                text: 'This category is a child category. Are you sure you want to delete it?',
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#d33',
-                cancelButtonColor: '#3085d6',
-                confirmButtonText: 'Yes, delete it!',
-                cancelButtonText: 'Cancel'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteForm' + categoryId).submit();
-                }
-            });
-        } else {
-            if (hasParent) {
+            function deleteCategoryConfirmation(couponId) {
                 Swal.fire({
-                    title: 'Delete Parent Category',
-                    text: 'This category has child categories. Are you sure you want to delete it?',
+                    title: 'Are you sure?',
+                    text: 'You are about to delete this coupon!',
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#d33',
                     cancelButtonColor: '#3085d6',
                     confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        document.getElementById('deleteForm' + categoryId).submit();
-                    }
-                });
-            } else {
-                Swal.fire({
-                    title: 'Delete Parent Category',
-                    text: 'Are you sure you want to delete this parent category?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#3085d6',
-                    confirmButtonText: 'Yes, delete it!',
-                    cancelButtonText: 'Cancel'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        Swal.fire({
-                            title: 'Parent Category Deleted',
-                            text: 'The parent category has been deleted.',
-                            icon: 'success'
-                        }).then(() => {
-                            document.getElementById('deleteForm' + categoryId).submit();
-                        });
+                        // Proceed with form submission if confirmed
+                        document.getElementById('deleteForm' + couponId).submit();
                     }
                 });
             }
-        }
-    }
-</script>
+        </script>
     @endpush
 @endsection
+
+
+
+
+{{-- <div class="card-body">
+    <table class="table table-bordered" id="ptable">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Image</th>
+            <th>Product Name</th>
+            <th>Purchase Price</th>
+            <th>Sale Price</th>
+            <th>Discount</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            @foreach ($products as $key => $product)
+                <tr>
+                    <td>{{ ++$key }}</td>
+                    <td> <img src="{{ asset('/' . $product->image) }}" alt="Product Image" width="50"></td>
+                    <td>{{ $product->product_name }}</td>
+                    <td>{{ $product->purchase_price }}</td>
+                    <td>{{ $product->sale_price }}</td>
+                    <td>{{ $product->discount }}</td>
+                    <td>{{ $product->status }}</td>
+                    <td>
+
+                        <a class="btn btn-info" href="{{ route('products.show', $product->id) }}">Show</a>
+                        @can('product-edit')
+                            <a class="btn btn-primary" href="{{ route('products.edit', $product->id) }}">Edit</a>
+                        @endcan
+
+                        <form action="{{ route('products.destroy', $product) }}" method="POST"
+                            id="deleteForm{{ $product->id }}" style="display: inline;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-danger" style="background-color:#cf1010"
+                                onclick="deleteCategoryConfirmation({{ $product->id }})">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</div> --}}

@@ -1,7 +1,6 @@
-@extends('layouts.app');
+@extends('layouts.app')
 @section('content')
 
-{{$errors}}
     <form method="POST" style="border: 1px solid black" action="{{route('users.update', $users->id)}}">
         @method('PUT')
         @csrf

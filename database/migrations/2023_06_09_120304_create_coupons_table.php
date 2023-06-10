@@ -13,8 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            //
+        Schema::create('coupons', function (Blueprint $table) {
+            $table->id();
+            $table->string('code');
+            $table->date('start_date');
+            $table->date('expiry_date');
+            $table->decimal('discount_price', 10, 2);
+            $table->string('status');
+            $table->timestamps();
         });
     }
 
@@ -25,8 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('permissions', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('coupons');
     }
 };

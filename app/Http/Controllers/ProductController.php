@@ -6,6 +6,8 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Models\Category;
 use Illuminate\Http\UploadedFile;
+use Intervention\Image\ImageManagerStatic as Image;
+
 
 
 class ProductController extends Controller
@@ -77,9 +79,16 @@ class ProductController extends Controller
     // Handle the image upload if provided
     if ($request->hasFile('image')) {
         $image = $request->file('image');
-        $imagePath = 'images/' . $image->getClientOriginalName(); // Specify the destination path and file name
-        $image->move(public_path('images'), $imagePath); // Move the uploaded image to the specified location
+        $imagePath = time().'.'.$image->getClientOriginalExtension(); // Specify the destination path and file name
+        $destinationPath = public_path('images');
+        $imgFile = Image::make($image->getRealPath());
+        $imgFile->resize(150, 150, function ($constraint) {
+		    $constraint->aspectRatio();
+		})->save($destinationPath. '/'.$imagePath);
+        $destinationPath = public_path('images');
+       // Move the uploaded image to the specified location
         $product->image = $imagePath;
+
 
     }
 
@@ -107,10 +116,11 @@ class ProductController extends Controller
      * @param  \App\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function edit(Product $product)
+    public function edit($id)
     {
         $product = Product::findOrFail($id);
-        return view('products.edit', compact('product'));
+        $categories = Category::all();
+        return view('products.edit', compact('product' , 'categories'));
     }
 
     /**
@@ -165,6 +175,13 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
+        $imagePath = public_path($product->image);
+
+        // Check if the image file exists
+        if (file_exists($imagePath)) {
+            // Delete the image file
+            unlink($imagePath);
+        }
 
 
         // Delete the product
