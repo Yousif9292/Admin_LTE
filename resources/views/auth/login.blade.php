@@ -75,13 +75,13 @@
       <!-- /.social-auth-links -->
 
       <p class="mb-1">
-        @if (Route::has('password.request'))
+        @if (Illuminate\Support\Facades\Route::has('password.request'))
             <a href="{{ route('password.request') }}">I forgot my password</a>
         @endif
       </p>
       <p class="mb-0">
         {{-- <a href="register.html" class="text-center">Register a new membership</a> --}}
-        @if (Route::has('register'))
+        @if (Illuminate\Support\Facades\Route::has('register'))
         <a href="{{ route('register') }}" class="text-center">Register a new membership</a>
         @endif
       </p>

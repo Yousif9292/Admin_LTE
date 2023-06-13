@@ -10,8 +10,8 @@ use Spatie\Permission\Models\Permission;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\PermissionGroup;
+use Illuminate\Support\Facades\DB;
 
-use DB;
 
 class RoleController extends Controller
 {

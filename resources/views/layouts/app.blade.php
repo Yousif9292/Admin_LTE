@@ -15,7 +15,7 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" /> --}}
 
         <!-- Scripts -->
-        @vite(['resources/js/app.js'])
+        {{-- mix.js('resources/js/app.js', 'public/dist/js').postCss('resources/css/app.css', 'public/dist/css'); --}}
 
         <!--DataTable Button Bg-Color-->
         <style>

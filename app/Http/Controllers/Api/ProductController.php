@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
 
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\Category;
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\ImageManagerStatic as Image;
 
-
-
-
 class ProductController extends Controller
 {
-    /**
+     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -33,7 +31,9 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
-        return view('products.index', compact('products'));
+        return response()->json([
+            'data' => $products,
+        ]);
     }
 
 
@@ -81,7 +81,7 @@ class ProductController extends Controller
     if ($request->hasFile('image')) {
         $image = $request->file('image');
         $imagePath = time().'.'.$image->getClientOriginalExtension(); // Specify the destination path and file name
-        $destinationPath = public_path('/images');
+        $destinationPath = public_path('images');
         $imgFile = Image::make($image->getRealPath());
         $imgFile->resize(150, 150, function ($constraint) {
 		    $constraint->aspectRatio();
@@ -97,7 +97,10 @@ class ProductController extends Controller
     $product->save();
 
     // Redirect to the index page with a success message
-    return redirect()->route('products.index')->with('success', 'Product created successfully');
+    return response()->json([
+        'data' => $product,
+        'message' => 'Product created successfully.',
+    ], 201);
 }
 
     /**
@@ -108,7 +111,9 @@ class ProductController extends Controller
      */
     public function show(Product $product)
     {
-        return view('products.show',compact('product'));
+        return response()->json([
+            'data' => $product,
+        ]);
     }
 
     /**
@@ -121,7 +126,9 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         $categories = Category::all();
-        return view('products.edit', compact('product' , 'categories'));
+        return response()->json([
+            'data' => $product,
+        ]);
     }
 
     /**
@@ -165,7 +172,10 @@ class ProductController extends Controller
         $product->save();
 
         // Redirect to the index page with a success message
-        return redirect()->route('products.index')->with('success', 'Product updated successfully');
+        return response()->json([
+            'data' => $product,
+            'message' => 'Product updated successfully.',
+        ]);
     }
 
     /**
@@ -176,19 +186,21 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        $imagePath = public_path($product->image);
+        // $imagePath = public_path($product->image);
 
-        // Check if the image file exists
-        if (file_exists($imagePath)) {
-            // Delete the image file
-            unlink($imagePath);
-        }
+        // // Check if the image file exists
+        // if (file_exists($imagePath)) {
+        //     // Delete the image file
+        //     unlink($imagePath);
+        // }
 
 
         // Delete the product
         $product->delete();
 
         // Redirect to the index page with a success message
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully');
+        return response()->json([
+            'message' => 'Product deleted successfully.',
+        ]);
     }
 }
