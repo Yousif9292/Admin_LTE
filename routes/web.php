@@ -13,6 +13,9 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CouponController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\VerificationController;
+
+
 
 
 /*
@@ -68,4 +71,6 @@ Route::controller(FacebookController::class)->group(function(){
     Route::get('auth/facebook', 'redirectToFacebook')->name('auth.facebook');
     Route::get('auth/facebook/callback', 'handleFacebookCallback');
 });
+
+Route::get('/generate-verification-code', [VerificationController::class, 'generateVerificationCode']);
 
