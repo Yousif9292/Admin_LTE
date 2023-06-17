@@ -73,7 +73,7 @@ class ProductController extends Controller
             })->encode();
 
             // Save the cropped image to the public/images folder
-            // $croppedImage->save(public_path('images/' . $imageName));
+            $croppedImage->save(public_path('images/' . $imageName));
 
             // Create a new product with the cropped image path
             $product = new Product();
