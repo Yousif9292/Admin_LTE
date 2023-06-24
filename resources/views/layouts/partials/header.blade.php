@@ -24,6 +24,10 @@
 
       <!-- Right navbar links -->
       <ul class="navbar-nav ml-auto">
+        <!-- Stripe Planes Dashboard-->
+        <li class="nav-item d-none d-sm-inline-block">
+            <a href="{{ route('plans.index') }}" class="nav-link" target="_blank">Subscriptions Plans</a>
+        </li>
           <!-- Navbar Search -->
           <li class="nav-item">
               <a class="nav-link" data-widget="navbar-search" href="#" role="button">

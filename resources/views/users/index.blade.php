@@ -50,6 +50,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Email</th>
+                        <th>Subscribed Plans</th>
                         <th colspan="2">Actions</th>
                     </tr>
                 </thead>
@@ -99,6 +100,10 @@
                         {
                             data: 'email',
                             name: 'email'
+                        },
+                        {
+                            data: 'subscribed_plans',
+                            name: 'subscribed_plans'
                         },
                         {
                             data: 'action',

@@ -42,4 +42,10 @@ return [
         'redirect' => 'http://localhost:8000/auth/facebook/callback',
     ],
 
+    'stripe' => [
+        'model' => App\Models\User::class, // Your User model or any other model you use for authentication
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+    ],
+
 ];

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('google_id')->nullable();
             $table->string('facebook_id')->nullable();
             $table->string('password');
+            $table->string('subscribed_plans')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
@@ -33,6 +34,10 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign(['subscribed_plans']);
+            $table->dropColumn('subscribed_plans');
+        });
     }
 };

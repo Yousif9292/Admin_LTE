@@ -71,6 +71,15 @@
                           </p>
                       </a>
                   </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link" href="{{ route('plans.view') }}">
+                      <i class="nav-icon fa fa-cart-plus" ></i>
+                        <p>
+                            Manage Plans
+                        </p>
+                    </a>
+                </li>
               </ul>
           </nav>
           <!-- /.sidebar-menu -->

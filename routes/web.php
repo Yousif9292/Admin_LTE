@@ -14,6 +14,9 @@ use App\Http\Controllers\CouponController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\VerificationController;
+use App\Http\Controllers\StripePaymentController;
+use Stripe\Stripe;
+use App\Http\Controllers\PlanController;
 
 
 
@@ -32,6 +35,13 @@ use App\Http\Controllers\VerificationController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/plans', function () {
+    return view('stripe.plans');
+});
+// Route::POST('/register1', [StripePaymentController::class, 'handlePayment'])->name('register1');
+// Route::get('/plans', [StripePaymentController::class, 'showPackagePlans'])->name('plans');
+
+
 
 Auth::routes();
 
@@ -44,7 +54,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('categories', CategoryController::class);
     Route::resource('coupons', CouponController::class);
 
-
+    Route::get('plans/view', [PlanController::class, 'viewplans'])->name('plans.view');
+    Route::post('/subscribe/{plan}', [PlanController::class, 'subscribe'])->name('subscribe');
+    Route::resource('plans', PlanController::class);
 });
 Route::get('/dashboard', function () {
     return view('dashboard');

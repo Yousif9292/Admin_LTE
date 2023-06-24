@@ -35,7 +35,7 @@ class UsersController extends Controller
         // return view('users.index' , compact('users'));
 
         if ($request->ajax()) {
-            $data = User::select('id', 'name', 'email')->get();
+            $data = User::select('id', 'name', 'email', 'subscribed_plans')->get();
             return Datatables::of($data)->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $btn = '<a href="' . route('users.edit', $row->id) . '"  class="edit btn btn-primary btn-sm ">Edit</a>';
