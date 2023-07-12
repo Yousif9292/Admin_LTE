@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->decimal('price', 8, 2);
             $table->string('duration');
+            $table->string('stripe_plan');
             $table->string('status');
             $table->text('description')->nullable();
             $table->timestamps();

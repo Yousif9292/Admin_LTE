@@ -80,7 +80,7 @@
                                     data-key="pk_test_51NL7FFCwr8UATqaQA1IR8YNY70bVm6DWWQg2uyZ4qpNDNrbHKR0hozDrx1DXPjnfE4VQY1pwbjII0yvbHKNbPqFa00TgcVdN87"
                                     data-name="Your Package"
                                     data-description="{{ $plan->name }}"
-                                    data-amount="{{ $plan->price  }}"
+                                    data-amount="{{ $plan->price*100 }}"
                                     data-currency="usd"
                                     data-email="{{ auth()->user()->email }}"
                                     data-label="BUY NOW"
