@@ -30,6 +30,7 @@ class PlanController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'price' => 'required',
+            'stripe_plan' => 'nullable',
             'duration' => 'required',
             'status' => 'required',
             'description' => 'nullable',
@@ -50,6 +51,7 @@ class PlanController extends Controller
         $validatedData = $request->validate([
             'name' => 'required',
             'price' => 'required',
+            'stripe_plan' => 'nullable',
             'duration' => 'required',
             'status' => 'required',
             'description' => 'nullable',
@@ -77,7 +79,7 @@ class PlanController extends Controller
     public function subscribe(Request $request, $plan)
     {
         // Set your Stripe secret key
-        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
 
         // Retrieve the selected plan
         $selectedPlan = Plan::find($plan);

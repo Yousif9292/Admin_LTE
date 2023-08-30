@@ -41,6 +41,10 @@
             <input type="text" name="price" id="price" class="form-control" value="{{ old('price') }}">
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12">
+            <label for="stripe_plan">Stripe Plan</label>
+            <input type="text" name="stripe_plan" id="stripe_plan" class="form-control" value="{{ old('stripe_plan') }}">
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-12">
             <label for="duration">Duration</label>
             <input type="text" name="duration" id="duration" class="form-control" value="{{ old('duration') }}">
         </div>

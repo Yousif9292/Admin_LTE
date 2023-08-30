@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.7",
         "laravel/ui": "^4.2",
         "laravelcollective/html": "^6.4",
+        "mews/captcha": "^3.3",
         "spatie/laravel-permission": "^5.10",
         "stripe/stripe-php": "*",
         "yajra/laravel-datatables-oracle": "~9.0"
